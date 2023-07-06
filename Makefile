@@ -6,7 +6,7 @@ USER_NAME := $(shell whoami)
 ARDUINO_CLI_PATH := arduino-cli
 
 compile:
-	$(ARDUINO_CLI_PATH) compile --fqbn esp32:esp32:esp32
+	$(ARDUINO_CLI_PATH) compile --fqbn $(BOARD_TAG)
 
 upload:
 	$(ARDUINO_CLI_PATH) upload -p $(MONITOR_PORT) --fqbn $(BOARD_TAG)
@@ -17,4 +17,4 @@ monitor:
 clean:
 	$(ARDUINO_CLI_PATH) cache clean
 
-all: compile upload
+all: compile upload monitor
