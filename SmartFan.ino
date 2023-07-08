@@ -24,7 +24,7 @@ const float TEMPERATURE_OFF = 28.5;
 void setup() {
   Serial.begin(9600);
   sensor.begin();  // Start the DS18B20 sensor
-  pinMode(IR_SENSOR_PIN, INPUT);
+  pinMode(IR_SENSOR_PIN, INPUT_PULLUP);
   pinMode(AUTOMATIC_MODE_BUTTON_PIN, INPUT_PULLUP);
 
   fan.low();
@@ -54,7 +54,18 @@ void loop() {
     automaticMode.toggle();
   }
 
+  manualModeListener();
   temperatureListener(temperature);
+}
+
+void manualModeListener() {
+  if (automaticMode.getState()) {  // Values are inverted
+    return;
+  }
+
+  if (btnIRSensor.isPressed()) {
+    fan.toggle();
+  }
 }
 
 void temperatureListener(float temperature) {
