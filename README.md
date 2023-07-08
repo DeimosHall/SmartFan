@@ -22,3 +22,12 @@ You can use one of the following options:
 ## Circuit
 
 ![Circuit](circuit.png)
+
+## Libraries
+
+| Used library   |   Version |
+|----------------|-----------|
+| [OneWireNg](https://github.com/pstolarz/OneWireNg)      |   0.13.1  |
+| [DallasTemperature](https://github.com/milesburton/Arduino-Temperature-Control-Library.git) | 3.9.0  |
+
+> Note: [OneWire](https://github.com/PaulStoffregen/OneWire) does not work with the Raspberry Pi Pico, so I used [OneWireNg](https://github.com/milesburton/Arduino-Temperature-Control-Library.git) instead.
