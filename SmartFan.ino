@@ -3,51 +3,63 @@
 #include <ezButton.h>
 #include <ezOutput.h>
 
+#define DEBOUNCE_TIME_MS 50
 #define FAN_PIN 28
-#define TEMPERATURE_PIN 27
+#define TEMPERATURE_SENSOR_PIN 27
 #define IR_SENSOR_PIN 26
+#define AUTOMATIC_MODE_PIN 16
 
-OneWire oneWire(TEMPERATURE_PIN);
+OneWire oneWire(TEMPERATURE_SENSOR_PIN);
 DallasTemperature sensor(&oneWire);
 ezOutput fan(FAN_PIN);
 ezButton btnIRSensor(IR_SENSOR_PIN);
+ezButton btnAutomaticMode(AUTOMATIC_MODE_PIN);
 
 // Temperature consts to turn the fan on/off
 const float TEMPERATURE_ON = 29.0;
-const float TEMPERATURE_OFF = 28.0;
+const float TEMPERATURE_OFF = 28.5;
+
+bool automaticMode = false;
 
 void setup() {
   Serial.begin(9600);
   sensor.begin();  // Start the DS18B20 sensor
   fan.low();
-  pinMode(IR_SENSOR_PIN, INPUT_PULLDOWN);
-  btnIRSensor.setDebounceTime(50);
+  pinMode(IR_SENSOR_PIN, INPUT);
+  pinMode(AUTOMATIC_MODE_PIN, INPUT_PULLUP);
+  btnIRSensor.setDebounceTime(DEBOUNCE_TIME_MS);
+  btnAutomaticMode.setDebounceTime(DEBOUNCE_TIME_MS);
 }
 
 void loop() {
   static unsigned long elapsedTime = millis();
+  static unsigned long elapsedTime2 = millis();
   btnIRSensor.loop();
-  unsigned long startTime = millis();
-  float temperature = getTemperature();
-  Serial.println("Time to get temperature: " + String(millis() - startTime) + "ms");
+  btnAutomaticMode.loop();
+  static float temperature = getTemperature();
 
   if (millis() - elapsedTime > 1000) {
     elapsedTime = millis();
-    Serial.println("Temperature: " + String(temperature, 2) + "°C");
-    Serial.println("Fan: " + String(fan.getState() ? "ON" : "OFF"));
-    if (digitalRead(IR_SENSOR_PIN) == LOW) {
-      Serial.println("pressed");
-    }
+    printDebugInfo(temperature);
+  }
 
-    if (digitalRead(IR_SENSOR_PIN) == HIGH) {
-      Serial.println("released");
-    }
+  if (millis() - elapsedTime2 > 10000) {
+    elapsedTime2 = millis();
+    temperature = getTemperature();
+  }
+
+  if (btnAutomaticMode.isPressed()) {
+    automaticMode = !automaticMode;
   }
 
   temperatureListener(temperature);
 }
 
 void temperatureListener(float temperature) {
+  if (!automaticMode) {
+    return;
+  }
+
   if (temperature > TEMPERATURE_ON) {
     fan.high();
   } else if (temperature < TEMPERATURE_OFF) {
@@ -61,4 +73,10 @@ void temperatureListener(float temperature) {
 float getTemperature() {
   sensor.requestTemperatures();
   return sensor.getTempCByIndex(0);
+}
+
+void printDebugInfo(float temperature) {
+  Serial.println("Temperature: " + String(temperature, 2) + "°C");
+  Serial.println("Fan: " + String(fan.getState() ? "ON" : "OFF"));
+  Serial.println("Automatic mode: " + String(automaticMode ? "ON" : "OFF"));
 }
