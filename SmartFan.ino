@@ -1,18 +1,28 @@
-#include <CPU.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
-#define FAN_PIN 33
-#define FAN_DELAY 10000
+#define FAN_PIN 28
+#define TEMPERATURE_PIN 27
 
-CPU cpu;
 bool fanState = false;
 
+OneWire oneWire(TEMPERATURE_PIN);
+DallasTemperature sensor(&oneWire);
+
 void setup() {
-  cpu.begin();
+  Serial.begin(9600);
+
+  sensor.begin();  // Start the DS18B20 sensor
 }
 
 void loop() {
-  Serial.println("Temperature: " + String(cpu.getTemperature(), 2) + "°C");
+  Serial.println("Temperature: " + String(getTemperature(), 2) + "°C");
   delay(1000);
+}
+
+float getTemperature() {
+  sensor.requestTemperatures();
+  return sensor.getTempCByIndex(0);
 }
 
 void fanOn() {
