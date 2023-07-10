@@ -9,7 +9,7 @@ compile:
 	$(ARDUINO_CLI_PATH) compile --fqbn $(BOARD_TAG)
 
 upload:
-	$(ARDUINO_CLI_PATH) upload -p $(MONITOR_PORT) --fqbn $(BOARD_TAG)
+	$(ARDUINO_CLI_PATH) upload -p $(MONITOR_PORT) --fqbn $(BOARD_TAG) --verbose
 
 monitor:
 	$(ARDUINO_CLI_PATH) monitor -p $(MONITOR_PORT)
