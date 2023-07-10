@@ -29,5 +29,7 @@ You can use one of the following options:
 |----------------|-----------|
 | [OneWireNg](https://github.com/pstolarz/OneWireNg)      |   0.13.1  |
 | [DallasTemperature](https://github.com/milesburton/Arduino-Temperature-Control-Library.git) | 3.9.0  |
+| [ezButton](https://github.com/ArduinoGetStarted/button.git) | 1.0.4 |
+| [ezOutput](https://github.com/ArduinoGetStarted/output.git) | 1.2.0 |
 
-> Note: [OneWire](https://github.com/PaulStoffregen/OneWire) does not work with the Raspberry Pi Pico, so I used [OneWireNg](https://github.com/milesburton/Arduino-Temperature-Control-Library.git) instead.
+> Note: [OneWire](https://github.com/PaulStoffregen/OneWire) does not work with the Raspberry Pi Pico, so I used [OneWireNg](https://github.com/milesburton/Arduino-Temperature-Control-Library.git) instead. The reason is described in [this Github issue](https://github.com/PaulStoffregen/OneWire/issues/123) and in [this Arduino forum](https://arduino.stackexchange.com/questions/91685/ds18b20-temperature-sensor-crashes-mbedos-on-arduino-nano-rp2040).
