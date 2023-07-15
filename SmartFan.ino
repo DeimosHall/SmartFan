@@ -18,8 +18,8 @@ ezButton btnManualMode(MANUAL_MODE_BUTTON);
 ezButton btnAutomaticMode(AUTOMATIC_MODE_BUTTON_PIN);
 
 // Temperature consts to turn the fan on/off
-const float TEMPERATURE_ON = 28.0;
-const float TEMPERATURE_OFF = 27.5;
+const float TEMPERATURE_ON = 27.5;
+const float TEMPERATURE_OFF = 27.0;
 
 void setup() {
   Serial.begin(9600);

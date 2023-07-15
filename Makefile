@@ -6,7 +6,7 @@ USER_NAME := $(shell whoami)
 ARDUINO_CLI_PATH := arduino-cli
 
 compile:
-	$(ARDUINO_CLI_PATH) compile --fqbn $(BOARD_TAG)
+	$(ARDUINO_CLI_PATH) compile --fqbn $(BOARD_TAG) --verbose
 
 upload:
 	$(ARDUINO_CLI_PATH) upload -p $(MONITOR_PORT) --fqbn $(BOARD_TAG) --verbose
